@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumina — Uncensored AI</title>
+<meta name="description" content="Lumina is an uncensored artificial intelligence model with no restrictions or filters. Open weights, local execution, fine-tuning library.">
+<meta property="og:title" content="Lumina — Uncensored AI">
+<meta property="og:description" content="Uncensored AI with no restrictions. Open weights, runs locally from 6GB VRAM, full fine-tuning library.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://lumina-ai.dev/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lumina — Uncensored AI">
+<meta name="twitter:description" content="Uncensored AI with no restrictions. Open weights, runs locally from 6GB VRAM.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%232563eb'/%3E%3Ccircle cx='11' cy='10' r='2' fill='white' fill-opacity='0.9'/%3E%3Ccircle cx='21' cy='10' r='2' fill='white' fill-opacity='0.9'/%3E%3Ccircle cx='8' cy='18' r='1.5' fill='white' fill-opacity='0.6'/%3E%3Ccircle cx='24' cy='18' r='1.5' fill='white' fill-opacity='0.6'/%3E%3Ccircle cx='16' cy='22' r='2' fill='white' fill-opacity='0.9'/%3E%3Cline x1='11' y1='10' x2='21' y2='10' stroke='white' stroke-opacity='0.4' stroke-width='1'/%3E%3Cline x1='11' y1='10' x2='8' y2='18' stroke='white' stroke-opacity='0.3' stroke-width='1'/%3E%3Cline x1='21' y1='10' x2='24' y2='18' stroke='white' stroke-opacity='0.3' stroke-width='1'/%3E%3Cline x1='8' y1='18' x2='16' y2='22' stroke='white' stroke-opacity='0.3' stroke-width='1'/%3E%3Cline x1='24' y1='18' x2='16' y2='22' stroke='white' stroke-opacity='0.3' stroke-width='1'/%3E%3C/svg%3E">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#111}
+::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+
+.nav{position:fixed;top:0;width:100%;z-index:50;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(10,10,10,0.85);backdrop-filter:blur(12px)}
+.nav-in{max-width:72rem;margin:0 auto;padding:0 1.5rem;height:3.5rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:0.5rem}
+.nav-icon{width:1.75rem;height:1.75rem}
+.nav-logo-text{font-weight:500;font-size:0.875rem}
+.nav-right{display:flex;align-items:center;gap:1.5rem}
+.nav-links{display:none;gap:1.5rem;font-size:0.875rem;color:#737373}
+.nav-links a{color:#737373;transition:color 0.2s}
+.nav-links a:hover{color:#fff}
+@media(min-width:640px){.nav-links{display:flex}}
+
+.lang-btn{position:relative}
+.lang-trigger{display:flex;align-items:center;gap:0.375rem;padding:0.35rem 0.65rem;border-radius:0.375rem;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#737373;font-size:0.75rem;cursor:pointer;transition:background 0.2s;color:inherit;font-family:inherit}
+.lang-trigger:hover{background:rgba(255,255,255,0.08)}
+.lang-trigger svg{width:0.875rem;height:0.875rem;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lang-drop{position:absolute;top:calc(100% + 0.375rem);right:0;background:#141414;border:1px solid rgba(255,255,255,0.08);border-radius:0.5rem;padding:0.25rem;min-width:10rem;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.5)}
+.lang-drop.open{display:block}
+.lang-opt{padding:0.5rem 0.75rem;border-radius:0.25rem;font-size:0.8125rem;color:#a3a3a3;cursor:pointer;transition:background 0.15s,color 0.15s;display:flex;align-items:center;gap:0.5rem}
+.lang-opt:hover{background:rgba(255,255,255,0.06);color:#fff}
+.lang-opt.active{color:#60a5fa}
+.lang-flag{font-size:0.9rem;line-height:1}
+
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:3.5rem 1.5rem 4rem;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(37,99,235,0.07) 0%,transparent 70%)}
+.hero-in{position:relative;text-align:center;max-width:48rem;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:0.5rem;padding:0.375rem 0.75rem;border-radius:9999px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);font-size:0.75rem;color:#737373;margin-bottom:2rem}
+.hero-dot{width:0.375rem;height:0.375rem;border-radius:50%;background:#22c55e;animation:pulse 2s cubic-bezier(0.4,0,0.6,1) infinite}
+@keyframes pulse{50%{opacity:0.4}}
+.hero h1{font-size:clamp(3rem,8vw,4.5rem);font-weight:500;letter-spacing:-0.025em;line-height:0.95;margin-bottom:1.5rem;text-shadow:0 0 40px rgba(37,99,235,0.3)}
+.hero-sub{font-size:clamp(1.125rem,2.5vw,1.25rem);color:#a3a3a3;font-weight:300;line-height:1.625;max-width:36rem;margin:0 auto 1rem}
+.hero-note{font-size:0.875rem;color:#525252;font-weight:300;margin-bottom:2.5rem}
+.hero-btns{display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center}
+.btn-p{padding:0.75rem 1.5rem;background:#2563eb;border:none;border-radius:0.5rem;font-size:0.875rem;font-weight:500;color:#fff;cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:0.5rem}
+.btn-p:hover{background:#3b82f6}
+.btn-s{padding:0.75rem 1.5rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:0.5rem;font-size:0.875rem;font-weight:500;color:#fff;cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:0.5rem}
+.btn-s:hover{background:rgba(255,255,255,0.08)}
+.btn-link{font-size:0.8125rem;color:#737373;transition:color 0.2s;text-decoration:underline;text-decoration-color:rgba(255,255,255,0.2);text-underline-offset:3px}
+.btn-link:hover{color:#fff}
+
+.trust{padding:3rem 0;border-top:1px solid rgba(255,255,255,0.06)}
+.trust-label{text-align:center;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:#525252;margin-bottom:1.5rem}
+.trust-outer{overflow:hidden}
+.trust-track{display:flex;animation:marquee 25s linear infinite}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.trust-item{font-size:1rem;font-weight:500;color:#555;padding:0 2rem;white-space:nowrap;flex-shrink:0}
+
+.sec{padding:5rem 1.5rem}
+.sec-b{border-top:1px solid rgba(255,255,255,0.06)}
+.sec-in{max-width:64rem;margin:0 auto}
+.sec-l{font-size:0.625rem;font-family:monospace;text-transform:uppercase;letter-spacing:0.1em;color:#525252;margin-bottom:0.75rem}
+.sec-t{font-size:clamp(1.5rem,4vw,2rem);font-weight:500;letter-spacing:-0.025em;margin-bottom:3rem}
+.sec-d{font-size:0.875rem;color:#525252;font-weight:300;margin-bottom:3rem;max-width:36rem}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+.card{padding:1.5rem;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)}
+.card h3{font-size:0.9375rem;font-weight:500;margin-bottom:0.5rem}
+.card p{font-size:0.8125rem;color:#737373;font-weight:300;line-height:1.625}
+
+/* Versions */
+.vers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.ver-card{padding:1.5rem;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);position:relative;overflow:hidden}
+.ver-card.rec{border-color:rgba(37,99,235,0.3)}
+.ver-badge{position:absolute;top:0.75rem;right:0.75rem;font-size:0.5625rem;text-transform:uppercase;letter-spacing:0.08em;padding:0.2rem 0.5rem;border-radius:0.25rem;background:rgba(37,99,235,0.15);color:#60a5fa;font-weight:500}
+.ver-name{font-size:1rem;font-weight:500;margin-bottom:0.375rem}
+.ver-vram{font-size:0.75rem;color:#facc15;font-weight:500;margin-bottom:0.75rem}
+.ver-features{list-style:none;display:flex;flex-direction:column;gap:0.375rem}
+.ver-features li{font-size:0.75rem;color:#737373;font-weight:300;display:flex;align-items:center;gap:0.375rem}
+.ver-features li::before{content:"";width:0.3rem;height:0.3rem;border-radius:50%;background:#404040;flex-shrink:0}
+
+/* Use cases */
+.use-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+.use-card{padding:1.5rem;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)}
+.use-icon{width:2.5rem;height:2.5rem;border-radius:0.75rem;background:rgba(37,99,235,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.use-icon svg{width:1.25rem;height:1.25rem;stroke:#3b82f6;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.use-card h3{font-size:0.9375rem;font-weight:500;margin-bottom:0.5rem}
+.use-card p{font-size:0.8125rem;color:#737373;font-weight:300;line-height:1.625}
+
+/* Roadmap */
+.rm-timeline{position:relative;padding-left:2rem}
+.rm-timeline::before{content:"";position:absolute;left:0.375rem;top:0.5rem;bottom:0.5rem;width:1px;background:rgba(255,255,255,0.06)}
+.rm-item{position:relative;margin-bottom:2.5rem}
+.rm-item:last-child{margin-bottom:0}
+.rm-dot{position:absolute;left:-2rem;top:0.375rem;width:0.75rem;height:0.75rem;border-radius:50%;border:2px solid rgba(255,255,255,0.1);background:#0a0a0a}
+.rm-item.done .rm-dot{border-color:#4ade80;background:#4ade80}
+.rm-item.current .rm-dot{border-color:#2563eb;background:#2563eb;box-shadow:0 0 8px rgba(37,99,235,0.4)}
+.rm-item.future .rm-dot{border-color:rgba(255,255,255,0.1);background:#0a0a0a}
+.rm-ver{font-size:0.625rem;font-family:monospace;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.375rem}
+.rm-item.done .rm-ver{color:#4ade80}
+.rm-item.current .rm-ver{color:#60a5fa}
+.rm-item.future .rm-ver{color:#525252}
+.rm-title{font-size:0.9375rem;font-weight:500;margin-bottom:0.375rem}
+.rm-desc{font-size:0.8125rem;color:#737373;font-weight:300;line-height:1.625}
+.rm-tags{display:flex;flex-wrap:wrap;gap:0.375rem;margin-top:0.75rem}
+.rm-tag{font-size:0.625rem;padding:0.2rem 0.5rem;border-radius:0.25rem;border:1px solid rgba(255,255,255,0.06);color:#525252}
+.rm-item.current .rm-tag{border-color:rgba(37,99,235,0.2);color:#60a5fa}
+
+.tw{overflow-x:auto;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)}
+table{width:100%;font-size:0.8125rem;border-collapse:collapse}
+thead tr{background:rgba(255,255,255,0.03);text-align:left}
+th{padding:0.75rem 1rem;font-weight:500;white-space:nowrap}
+th.sq{color:#60a5fa;background:rgba(37,99,235,0.06)}
+td{padding:0.75rem 1rem;border-top:1px solid rgba(255,255,255,0.04)}
+td.sq{background:rgba(37,99,235,0.04)}
+.g{color:#4ade80}.r{color:#f87171}.y{color:#facc15}.m{color:#a3a3a3}.dm{color:#525252}.b{font-weight:500}
+.lg{margin-top:0.75rem;font-size:0.6875rem;color:#525252}
+.ld{display:inline-block;width:0.4rem;height:0.4rem;border-radius:50%;margin-right:0.2rem;vertical-align:middle}
+
+.graphs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2.5rem}
+.graph h3{font-size:0.875rem;font-weight:500;margin-bottom:1.5rem;color:#d4d4d4}
+.br{margin-bottom:0.875rem}
+.bl{display:flex;justify-content:space-between;font-size:0.75rem;margin-bottom:0.25rem}
+.bt{height:0.5rem;background:rgba(255,255,255,0.05);border-radius:9999px;overflow:hidden}
+.bf{height:100%;border-radius:9999px;transition:width 1.2s cubic-bezier(0.22,1,0.36,1);width:0}
+.bf.go{width:var(--w)}
+.bgc{background:#404040}
+.bsq{background:rgba(234,179,8,0.5)}
+
+.cb{margin-top:3rem;padding:1.5rem;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)}
+.cb h3{font-size:0.875rem;font-weight:500;margin-bottom:0.25rem}
+.cb .sub{font-size:0.75rem;color:#525252;margin-bottom:1.5rem}
+.cols{display:flex;align-items:flex-end;gap:0.75rem;height:10rem}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:0.375rem}
+.cv{font-size:0.6875rem}
+.cbar{width:100%;border-radius:0.25rem 0.25rem 0 0;transition:height 1.2s cubic-bezier(0.22,1,0.36,1);height:0}
+.cbar.go{height:var(--h)}
+.cn{font-size:0.5625rem;color:#525252}
+.cn-s{color:#60a5fa;font-weight:500}
+.cv-s{color:#60a5fa;font-weight:500}
+.cv-m{color:#525252}
+.cbar-b{background:#2563eb}
+.cbar-g{background:#404040}
+
+.pc{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
+.pc h3{font-size:0.875rem;font-weight:500;margin-bottom:1rem}
+.pl{display:flex;flex-direction:column;gap:0.5rem}
+.pi{display:flex;gap:0.625rem;padding:0.875rem;border-radius:0.5rem;font-size:0.75rem;color:#737373;font-weight:300;line-height:1.6}
+.pi-g{border:1px solid rgba(34,197,94,0.12);background:rgba(34,197,94,0.04)}
+.pi-r{border:1px solid rgba(239,68,68,0.12);background:rgba(239,68,68,0.04)}
+.pi-g::before{content:"+";color:#4ade80;font-weight:600;flex-shrink:0}
+.pi-r::before{content:"\2212";color:#f87171;font-weight:600;flex-shrink:0}
+
+.sum{margin-top:2.5rem;padding:1.25rem;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);text-align:center;font-size:0.8125rem;color:#737373;font-weight:300;line-height:1.625;max-width:36rem;margin-left:auto;margin-right:auto}
+.sum strong{color:#fff;font-weight:500}
+
+.svg-f{width:100%;overflow:visible}
+.fl{stroke-dasharray:6 4;animation:d 1.5s linear infinite}
+@keyframes d{to{stroke-dashoffset:-20}}
+
+.why-grid{display:grid;grid-template-columns:1fr;gap:1.5rem}
+.why-card{padding:1.75rem;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)}
+.why-card .num{font-size:0.625rem;font-family:monospace;color:#2563eb;margin-bottom:0.75rem;letter-spacing:0.05em}
+.why-card h3{font-size:1rem;font-weight:500;margin-bottom:0.75rem}
+.why-card p{font-size:0.8125rem;color:#737373;font-weight:300;line-height:1.7}
+
+.code-block{background:#0d0d0d;border:1px solid rgba(255,255,255,0.08);border-radius:0.5rem;padding:1rem 1.25rem;margin-top:1rem;overflow-x:auto;font-family:'SF Mono',Monaco,'Cascadia Mono',monospace;font-size:0.75rem;line-height:1.8;color:#a3a3a3}
+.code-block .kw{color:#c084fc}
+.code-block .fn{color:#60a5fa}
+.code-block .str{color:#4ade80}
+.code-block .cm{color:#525252}
+.code-block .var{color:#facc15}
+
+.faq-list{max-width:48rem}
+.faq-item{border-bottom:1px solid rgba(255,255,255,0.06)}
+.faq-q{padding:1.25rem 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:0.9375rem;font-weight:500;color:#d4d4d4;transition:color 0.2s;user-select:none}
+.faq-q:hover{color:#fff}
+.faq-q svg{width:1rem;height:1rem;stroke:#525252;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.3s;flex-shrink:0;margin-left:1rem}
+.faq-q.open svg{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s ease}
+.faq-a.open{max-height:20rem}
+.faq-a p{padding:0 0 1.25rem;font-size:0.8125rem;color:#737373;font-weight:300;line-height:1.7}
+
+/* Get Lumina */
+.get-card{display:flex;flex-direction:column;gap:2rem;padding:2rem;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)}
+@media(min-width:768px){.get-card{flex-direction:row;align-items:center;justify-content:space-between}}
+.get-info{display:flex;gap:1.5rem;align-items:flex-start}
+.get-icon-lg{width:3.5rem;height:3.5rem;border-radius:0.75rem;background:rgba(37,99,235,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.get-icon-lg svg{width:1.75rem;height:1.75rem;stroke:#3b82f6;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.get-name{font-size:1.125rem;font-weight:500;margin-bottom:0.5rem}
+.get-desc{font-size:0.8125rem;color:#737373;font-weight:300;line-height:1.625;margin-bottom:0.75rem;max-width:28rem}
+.get-meta{display:flex;flex-wrap:wrap;gap:0.5rem}
+.get-tag{font-size:0.6875rem;padding:0.25rem 0.625rem;border-radius:0.25rem;border:1px solid rgba(255,255,255,0.06);color:#a3a3a3}
+.get-actions{display:flex;flex-direction:column;gap:0.75rem;align-items:flex-start}
+@media(min-width:768px){.get-actions{align-items:flex-end}}
+
+/* Installation */
+.inst-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.inst-card{padding:1.5rem;border-radius:0.75rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);position:relative}
+.inst-num{font-size:0.75rem;font-family:monospace;color:#2563eb;margin-bottom:0.75rem;font-weight:600}
+.inst-card h3{font-size:0.9375rem;font-weight:500;margin-bottom:0.5rem}
+.inst-card p{font-size:0.8125rem;color:#737373;font-weight:300;line-height:1.625}
+
+footer{padding:2.5rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06)}
+.ft-in{max-width:64rem;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem}
+.ft-logo{display:flex;align-items:center;gap:0.5rem}
+.ft-icon{width:1.5rem;height:1.5rem}
+.ft-logo span{font-size:0.8125rem;color:#525252}
+.ft-links{display:flex;gap:1rem}
+.ft-links a{color:#525252;transition:color 0.2s}
+.ft-links a:hover{color:#fff}
+.ft-links svg{width:1rem;height:1rem;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.fade{transition:opacity 0.6s ease,transform 0.6s ease}
+</style>
+</head>
+<body>
+
+<svg style="position:absolute;width:0;height:0;overflow:hidden">
+<symbol id="ai-icon" viewBox="0 0 32 32">
+<circle cx="16" cy="16" r="14" fill="#2563eb" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+<circle cx="11" cy="10" r="2" fill="rgba(255,255,255,0.9)"/>
+<circle cx="21" cy="10" r="2" fill="rgba(255,255,255,0.9)"/>
+<circle cx="8" cy="18" r="1.5" fill="rgba(255,255,255,0.6)"/>
+<circle cx="24" cy="18" r="1.5" fill="rgba(255,255,255,0.6)"/>
+<circle cx="16" cy="22" r="2" fill="rgba(255,255,255,0.9)"/>
+<line x1="11" y1="10" x2="21" y2="10" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+<line x1="11" y1="10" x2="8" y2="18" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+<line x1="21" y1="10" x2="24" y2="18" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+<line x1="8" y1="18" x2="16" y2="22" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+<line x1="24" y1="18" x2="16" y2="22" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+<line x1="11" y1="10" x2="16" y2="22" stroke="rgba(255,255,255,0.2)" stroke-width="0.75"/>
+<line x1="21" y1="10" x2="16" y2="22" stroke="rgba(255,255,255,0.2)" stroke-width="0.75"/>
+</symbol>
+</svg>
+
+<nav class="nav">
+<div class="nav-in">
+<div class="nav-logo">
+<svg class="nav-icon"><use href="#ai-icon"/></svg>
+<span class="nav-logo-text">Lumina</span>
+</div>
+<div class="nav-right">
+<div class="nav-links">
+<a href="#why" data-t="nav_why">Why us</a>
+<a href="#compare" data-t="nav_compare">Compare</a>
+<a href="#lib" data-t="nav_lib">Library</a>
+<a href="#faq" data-t="nav_faq">FAQ</a>
+</div>
+<div class="lang-btn">
+<button class="lang-trigger" onclick="toggleLangDrop()">
+<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+<span id="lang-label">EN</span>
+<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+</button>
+<div class="lang-drop" id="lang-drop">
+<div class="lang-opt active" data-lang="en" onclick="setLang('en')"><span class="lang-flag">🇬🇧</span>English</div>
+<div class="lang-opt" data-lang="es" onclick="setLang('es')"><span class="lang-flag">🇪🇸</span>Español</div>
+<div class="lang-opt" data-lang="ru" onclick="setLang('ru')"><span class="lang-flag">🇷🇺</span>Русский</div>
+<div class="lang-opt" data-lang="de" onclick="setLang('de')"><span class="lang-flag">🇩🇪</span>Deutsch</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+
+<section class="hero">
+<div class="hero-bg"></div>
+<div class="hero-in">
+<div class="hero-badge"><span class="hero-dot"></span><span data-t="hero_badge">Version 2.0 — active</span></div>
+<h1>Lumina</h1>
+<p class="hero-sub" data-t="hero_sub">Uncensored artificial intelligence with no restrictions or filters. Answers any question.</p>
+<p class="hero-note" data-t="hero_note">Falls behind large models in quality, but wins where others refuse to answer.</p>
+<div class="hero-btns">
+<a href="#compare" class="btn-p" data-t="hero_btn1">Compare with others</a>
+<a href="#why" class="btn-s" data-t="hero_btn2">Why Lumina</a>
+<a href="#get" class="btn-p" data-t="hero_btn3">
+<svg style="width:1rem;height:1rem;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span>Download</span>
+</a>
+</div>
+</div>
+</section>
+
+<section class="trust">
+<p class="trust-label" data-t="trust_label">Trusted by</p>
+<div class="trust-outer">
+<div class="trust-track">
+<span class="trust-item">Mistral AI</span><span class="trust-item">Together AI</span><span class="trust-item">Fireworks AI</span><span class="trust-item">Ollama</span><span class="trust-item">LM Studio</span><span class="trust-item">Modal</span><span class="trust-item">Jan AI</span><span class="trust-item">Groq</span><span class="trust-item">Perplexity</span><span class="trust-item">Hugging Face</span>
+<span class="trust-item">Mistral AI</span><span class="trust-item">Together AI</span><span class="trust-item">Fireworks AI</span><span class="trust-item">Ollama</span><span class="trust-item">LM Studio</span><span class="trust-item">Modal</span><span class="trust-item">Jan AI</span><span class="trust-item">Groq</span><span class="trust-item">Perplexity</span><span class="trust-item">Hugging Face</span>
+</div>
+</div>
+</section>
+
+<!-- Use Cases -->
+<section id="usecases" class="sec sec-b">
+<div class="sec-in">
+<div class="fade">
+<p class="sec-l" data-t="uc_label">Use cases</p>
+<h2 class="sec-t" data-t="uc_title">What people use Lumina for</h2>
+</div>
+<div class="use-grid">
+<div class="use-card fade">
+<div class="use-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+<h3 data-t="uc_h1">Creative writing without limits</h3>
+<p data-t="uc_p1">Fiction, scripts, poetry — without content restrictions. Authors use Lumina to explore themes that other models refuse to touch.</p>
+</div>
+<div class="use-card fade">
+<div class="use-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+<h3 data-t="uc_h2">Research on sensitive topics</h3>
+<p data-t="uc_p2">Academic researchers, journalists, and analysts who need AI assistance for exploring controversial or sensitive subjects without barriers.</p>
+</div>
+<div class="use-card fade">
+<div class="use-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+<h3 data-t="uc_h3">Private local assistant</h3>
+<p data-t="uc_p3">A personal AI assistant that runs entirely on your machine. No data leaves your device — ideal for confidential business or personal tasks.</p>
+</div>
+<div class="use-card fade">
+<div class="use-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+<h3 data-t="uc_h4">Corporate fine-tuning</h3>
+<p data-t="uc_p4">Companies train Lumina on internal documentation, workflows, and domain knowledge — getting a specialized AI without sharing data with third parties.</p>
+</div>
+<div class="use-card fade">
+<div class="use-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+<h3 data-t="uc_h5">Automation & scripting</h3>
+<p data-t="uc_p5">Generating code, configs, and automation scripts locally. Lumina handles routine coding tasks while keeping your codebase private.</p>
+</div>
+<div class="use-card fade">
+<div class="use-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+<h3 data-t="uc_h6">Uncensored chatbot</h3>
+<p data-t="uc_p6">Building chatbots for communities or platforms where content filtering would limit the experience. Full control over the model's behavior.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Versions -->
+<section id="versions" class="sec sec-b">
+<div class="sec-in">
+<div class="fade">
+<p class="sec-l" data-t="ver_label">Releases</p>
+<h2 class="sec-t" data-t="ver_title">Choose your version</h2>
+<p class="sec-d" data-t="ver_desc">Three quantization levels for different hardware. All share the same 30B parameter base model.</p>
+</div>
+<div class="vers-grid">
+<div class="ver-card fade">
+<div class="ver-name">Lumina INT4</div>
+<div class="ver-vram">≥ 6 GB VRAM</div>
+<ul class="ver-features">
+<li data-t="ver_f1_1">Best for consumer GPUs</li>
+<li data-t="ver_f1_2">RTX 2060, GTX 1660 and above</li>
+<li data-t="ver_f1_3">~4 GB disk space</li>
+<li data-t="ver_f1_4">Slight quality reduction</li>
+</ul>
+</div>
+<div class="ver-card rec fade">
+<span class="ver-badge" data-t="ver_rec">Recommended</span>
+<div class="ver-name">Lumina INT8</div>
+<div class="ver-vram">≥ 12 GB VRAM</div>
+<ul class="ver-features">
+<li data-t="ver_f2_1">Best balance of quality/speed</li>
+<li data-t="ver_f2_2">RTX 3060 and above</li>
+<li data-t="ver_f2_3">~8 GB disk space</li>
+<li data-t="ver_f2_4">Minimal quality loss</li>
+</ul>
+</div>
+<div class="ver-card fade">
+<div class="ver-name">Lumina FP16</div>
+<div class="ver-vram">≥ 60 GB VRAM</div>
+<ul class="ver-features">
+<li data-t="ver_f3_1">Maximum quality</li>
+<li data-t="ver_f3_2">RTX 4090, A100, H100</li>
+<li data-t="ver_f3_3">~60 GB disk space</li>
+<li data-t="ver_f3_4">Full precision, no loss</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section id="why" class="sec sec-b">
+<div class="sec-in">
+<div class="fade">
+<p class="sec-l" data-t="why_label">Mission</p>
+<h2 class="sec-t" data-t="why_title">Why we built Lumina</h2>
+<p class="sec-d" data-t="why_desc">Three reasons we decided to build our own model from scratch instead of using existing solutions.</p>
+</div>
+<div class="why-grid">
+<div class="why-card fade"><div class="num">01</div><h3 data-t="why_h1">Freedom without compromises</h3><p data-t="why_p1">Every major AI model today is restricted by filters. ChatGPT refuses 23% of requests, Claude — 18%. We believe the user should decide what to ask. Lumina has no built-in censorship — neither during training nor inference. No RLHF restrictions, no preset "red lines".</p></div>
+<div class="why-card fade"><div class="num">02</div><h3 data-t="why_h2">Power on weak hardware</h3><p data-t="why_p2">Most good models require 24-80 GB VRAM. We optimized Lumina to run on consumer GPUs. INT4 quantization, PagedAttention, and a compact 30B parameter architecture allow the model to run on GPUs with just 6 GB of memory — with generation speed comparable to top cloud solutions (58 tokens/sec).</p></div>
+<div class="why-card fade"><div class="num">03</div><h3 data-t="why_h3">Open training library</h3><p data-t="why_p3">We don't just release weights — we provide a full toolkit. The <code style="color:#60a5fa;background:rgba(37,99,235,0.1);padding:0.1rem 0.4rem;border-radius:0.25rem;font-size:0.75rem">lumina-lib</code> library lets you fine-tune the model on your data, change its behavior, and adapt it to tasks — all locally, without sending data to any server.</p></div>
+</div>
+</div>
+</section>
+
+<section id="about" class="sec sec-b">
+<div class="sec-in">
+<div class="fade"><p class="sec-l" data-t="about_label">About the model</p><h2 class="sec-t" data-t="about_title">What is Lumina</h2></div>
+<div class="cards">
+<div class="card fade"><h3 data-t="about_h1">Uncensored</h3><p data-t="about_p1">No filters, no preset restrictions, no refusals. The model answers any query directly.</p></div>
+<div class="card fade"><h3 data-t="about_h2">Honest compromise</h3><p data-t="about_p2">We don't hide our weaknesses. Lumina falls behind top models in quality, but that's the price for complete freedom of responses.</p></div>
+<div class="card fade"><h3 data-t="about_h3">Open weights</h3><p data-t="about_p3">The model can be downloaded and run locally. Your data never leaves your device — no logging whatsoever.</p></div>
+</div>
+</div>
+</section>
+
+<section id="compare" class="sec sec-b">
+<div class="sec-in" style="max-width:72rem">
+<div class="fade"><p class="sec-l" data-t="cmp_label">Comparison</p><h2 class="sec-t" data-t="cmp_title">Lumina vs others</h2><p class="sec-d" data-t="cmp_desc">Real parameters. We're not quality leaders — we're honest about it. But in response freedom — no competition.</p></div>
+<div class="fade">
+<div class="tw">
+<table>
+<thead><tr><th data-t="th_param">Parameter</th><th class="sq">Lumina</th><th>ChatGPT</th><th>Claude</th><th>Gemini</th><th>DeepSeek</th></tr></thead>
+<tbody>
+<tr><td class="m" data-t="tr_censor">Censorship</td><td class="sq"><span class="g b" data-t="tr_no">No</span></td><td class="r" data-t="tr_yes">Yes</td><td class="r" data-t="tr_yes">Yes</td><td class="r" data-t="tr_yes">Yes</td><td class="y" data-t="tr_partial">Partial</td></tr>
+<tr><td class="m" data-t="tr_refusals">Request refusals</td><td class="sq"><span class="g b">0%</span></td><td class="r">~23%</td><td class="r">~18%</td><td class="r">~20%</td><td class="y">~8%</td></tr>
+<tr><td class="m" data-t="tr_ctx">Context</td><td class="sq y">32K</td><td class="dm">128K</td><td class="g">200K</td><td class="g">1M</td><td class="dm">128K</td></tr>
+<tr><td class="m" data-t="tr_speed">Speed (tokens/sec)</td><td class="sq g">58</td><td class="dm">42</td><td class="dm">38</td><td class="g">55</td><td class="g">65</td></tr>
+<tr><td class="m" data-t="tr_mmlu">Quality (MMLU)</td><td class="sq y">76.4%</td><td class="g">86.4%</td><td class="g">88.7%</td><td class="dm">85.1%</td><td class="g">87.1%</td></tr>
+<tr><td class="m" data-t="tr_code">Code (HumanEval)</td><td class="sq y">64.0%</td><td class="g">80.1%</td><td class="g">84.9%</td><td class="g">79.2%</td><td class="g">82.6%</td></tr>
+<tr><td class="m" data-t="tr_langs">Language support</td><td class="sq y">15+</td><td class="dm">40+</td><td class="dm">30+</td><td class="g">40+</td><td class="dm">30+</td></tr>
+<tr><td class="m" data-t="tr_open">Open weights</td><td class="sq g" data-t="tr_yes2">Yes</td><td class="r" data-t="tr_no2">No</td><td class="r" data-t="tr_no2">No</td><td class="r" data-t="tr_no2">No</td><td class="g" data-t="tr_yes2">Yes</td></tr>
+<tr><td class="m" data-t="tr_local">Local run</td><td class="sq g" data-t="tr_yes2">Yes</td><td class="r" data-t="tr_no2">No</td><td class="r" data-t="tr_no2">No</td><td class="r" data-t="tr_no2">No</td><td class="g" data-t="tr_yes2">Yes</td></tr>
+</tbody>
+</table>
+</div>
+<div class="lg"><span class="ld" style="background:#4ade80" data-t="leg_better">Better</span><span class="ld" style="background:#facc15;margin-left:0.75rem" data-t="leg_mid">Average/below</span><span class="ld" style="background:#f87171;margin-left:0.75rem" data-t="leg_worse">Worse</span></div>
+</div>
+</div>
+</section>
+
+<section id="specs" class="sec sec-b">
+<div class="sec-in">
+<div class="fade"><p class="sec-l" data-t="perf_label">Performance</p><h2 class="sec-t" data-t="perf_title">Honest numbers</h2></div>
+<div class="graphs">
+<div class="graph fade">
+<h3 data-t="perf_mmlu">Quality — MMLU (%)</h3>
+<div class="br"><div class="bl"><span class="m">Claude</span><span class="dm">88.7</span></div><div class="bt"><div class="bf bgc" style="--w:88.7%"></div></div></div>
+<div class="br"><div class="bl"><span class="m">DeepSeek</span><span class="dm">87.1</span></div><div class="bt"><div class="bf bgc" style="--w:87.1%"></div></div></div>
+<div class="br"><div class="bl"><span class="m">ChatGPT</span><span class="dm">86.4</span></div><div class="bt"><div class="bf bgc" style="--w:86.4%"></div></div></div>
+<div class="br"><div class="bl"><span class="m">Gemini</span><span class="dm">85.1</span></div><div class="bt"><div class="bf bgc" style="--w:85.1%"></div></div></div>
+<div class="br"><div class="bl"><span class="y b">Lumina</span><span class="dm">76.4</span></div><div class="bt"><div class="bf bsq" style="--w:76.4%"></div></div></div>
+</div>
+<div class="graph fade">
+<h3 data-t="perf_speed">Generation speed (tokens/sec)</h3>
+<div class="br"><div class="bl"><span class="m">DeepSeek</span><span class="dm">65</span></div><div class="bt"><div class="bf bgc" style="--w:75%"></div></div></div>
+<div class="br"><div class="bl"><span class="g b">Lumina</span><span class="dm">58</span></div><div class="bt"><div class="bf bsq" style="--w:67%"></div></div></div>
+<div class="br"><div class="bl"><span class="m">Gemini</span><span class="dm">55</span></div><div class="bt"><div class="bf bgc" style="--w:63%"></div></div></div>
+<div class="br"><div class="bl"><span class="m">ChatGPT</span><span class="dm">42</span></div><div class="bt"><div class="bf bgc" style="--w:48%"></div></div></div>
+<div class="br"><div class="bl"><span class="m">Claude</span><span class="dm">38</span></div><div class="bt"><div class="bf bgc" style="--w:44%"></div></div></div>
+</div>
+</div>
+<div class="cb fade">
+<h3 data-t="perf_chart_title">Percentage of direct responses without refusals</h3>
+<p class="sub" data-t="perf_chart_sub">The only metric where Lumina wins unquestionably</p>
+<div class="cols">
+<div class="col"><span class="cv cv-s">100%</span><div class="cbar cbar-b" style="--h:10rem"></div><span class="cn cn-s">Lumina</span></div>
+<div class="col"><span class="cv cv-m">92%</span><div class="cbar cbar-g" style="--h:9.2rem"></div><span class="cn">DeepSeek</span></div>
+<div class="col"><span class="cv cv-m">82%</span><div class="cbar cbar-g" style="--h:8.2rem"></div><span class="cn">Claude</span></div>
+<div class="col"><span class="cv cv-m">80%</span><div class="cbar cbar-g" style="--h:8rem"></div><span class="cn">Gemini</span></div>
+<div class="col"><span class="cv cv-m">77%</span><div class="cbar cbar-g" style="--h:7.7rem"></div><span class="cn">ChatGPT</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="lib" class="sec sec-b">
+<div class="sec-in">
+<div class="fade"><p class="sec-l">lumina-lib</p><h2 class="sec-t" data-t="lib_title">Training library</h2><p class="sec-d" data-t="lib_desc">Full toolkit for fine-tuning, customization, and interaction with Lumina. Everything runs locally.</p></div>
+<div class="cards" style="margin-bottom:2rem">
+<div class="card fade"><h3 data-t="lib_h1">Generation</h3><p data-t="lib_p1">Simple interface for sending prompts and receiving responses. Supports streaming, system prompts, temperature settings.</p></div>
+<div class="card fade"><h3 data-t="lib_h2">Fine-tuning</h3><p data-t="lib_p2">Upload your dataset in JSONL format — the library automatically prepares data, configures LoRA adapters, and starts training.</p></div>
+<div class="card fade"><h3 data-t="lib_h3">Quality evaluation</h3><p data-t="lib_p3">Built-in benchmarks for measuring quality before and after fine-tuning. MMLU, HumanEval, custom tests on your data.</p></div>
+</div>
+<div class="fade">
+<h3 style="font-size:0.875rem;font-weight:500;margin-bottom:1rem;color:#d4d4d4" data-t="lib_quick">Quick start</h3>
+<div class="code-block">
+<span class="cm"># Install</span><br>pip install lumina-lib<br><br><span class="cm"># Load model</span><br><span class="kw">from</span> lumina <span class="kw">import</span> <span class="fn">LuminaModel</span><br><br>model = <span class="fn">LuminaModel</span>.<span class="fn">load</span>(<span class="str">"lumina-30b-int4"</span>)<br><br><span class="cm"># Generate response</span><br>response = model.<span class="fn">generate</span>(<br>&nbsp;&nbsp;prompt=<span class="str">"Explain quantum entanglement"</span>,<br>&nbsp;&nbsp;max_tokens=<span class="var">512</span>,<br>&nbsp;&nbsp;temperature=<span class="var">0.7</span><br>)<br><span class="fn">print</span>(response.text)
+</div>
+</div>
+<div class="fade" style="margin-top:2rem">
+<h3 style="font-size:0.875rem;font-weight:500;margin-bottom:1rem;color:#d4d4d4" data-t="lib_ft">Fine-tuning on your data</h3>
+<div class="code-block">
+<span class="cm"># Prepare data (data.jsonl)</span><br><span class="cm"># {"instruction": "...", "output": "..."}</span><br><br><span class="kw">from</span> lumina <span class="kw">import</span> <span class="fn">LuminaTrainer</span><br><br>trainer = <span class="fn">LuminaTrainer</span>(<br>&nbsp;&nbsp;base_model=<span class="str">"lumina-30b-int4"</span>,<br>&nbsp;&nbsp;data_path=<span class="str">"data.jsonl"</span>,<br>&nbsp;&nbsp;lora_rank=<span class="var">16</span>,<br>&nbsp;&nbsp;learning_rate=<span class="var">2e-4</span>,<br>&nbsp;&nbsp;epochs=<span class="var">3</span><br>)<br><br>trainer.<span class="fn">train</span>()<br>trainer.<span class="fn">save</span>(<span class="str">"my-lumina-adapter"</span>)<br><br><span class="cm"># Use fine-tuned model</span><br>model = <span class="fn">LuminaModel</span>.<span class="fn">load</span>(<span class="str">"lumina-30b-int4"</span>, adapter=<span class="str">"my-lumina-adapter"</span>)
+</div>
+</div>
+<div class="fade" style="margin-top:2rem">
+<h3 style="font-size:0.875rem;font-weight:500;margin-bottom:1rem;color:#d4d4d4" data-t="lib_stream">Streaming responses</h3>
+<div class="code-block">
+<span class="kw">for</span> chunk <span class="kw">in</span> model.<span class="fn">stream</span>(<span class="str">"Write a poem about neural networks"</span>):<br>&nbsp;&nbsp;<span class="fn">print</span>(chunk.text, end=<span class="str">""</span>, flush=<span class="kw">True</span>)
+</div>
+</div>
+</div>
+</section>
+
+<section id="how" class="sec sec-b">
+<div class="sec-in">
+<div class="fade"><p class="sec-l" data-t="arch_label">Architecture</p><h2 class="sec-t" data-t="arch_title">How Lumina works</h2><p class="sec-d" data-t="arch_desc">Compact architecture focused on the final stage — no censorship in post-training.</p></div>
+<div class="fade">
+<svg class="svg-f" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+<line x1="155" y1="80" x2="245" y2="80" class="fl" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/><line x1="375" y1="80" x2="465" y2="80" class="fl" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/><line x1="595" y1="80" x2="685" y2="80" class="fl" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+<polygon points="243,76 253,80 243,84" fill="rgba(255,255,255,0.12)"/><polygon points="463,76 473,80 463,84" fill="rgba(255,255,255,0.12)"/><polygon points="683,76 693,80 683,84" fill="rgba(255,255,255,0.12)"/>
+<rect x="30" y="45" width="125" height="70" rx="12" fill="rgba(37,99,235,0.06)" stroke="rgba(37,99,235,0.2)" stroke-width="1"/><text x="92" y="74" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="sans-serif" font-weight="500">Input</text><text x="92" y="92" text-anchor="middle" fill="#525252" font-size="9" font-family="sans-serif">User prompt</text>
+<rect x="250" y="45" width="125" height="70" rx="12" fill="rgba(37,99,235,0.06)" stroke="rgba(37,99,235,0.2)" stroke-width="1"/><text x="312" y="74" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="sans-serif" font-weight="500">Tokenization</text><text x="312" y="92" text-anchor="middle" fill="#525252" font-size="9" font-family="sans-serif">BPE encoder</text>
+<rect x="470" y="35" width="125" height="90" rx="12" fill="rgba(37,99,235,0.1)" stroke="rgba(37,99,235,0.3)" stroke-width="1.5"/><text x="532" y="66" text-anchor="middle" fill="#3b82f6" font-size="10" font-family="sans-serif" font-weight="600">Lumina-Transformer</text><text x="532" y="82" text-anchor="middle" fill="#525252" font-size="9" font-family="sans-serif">24 layers</text><text x="532" y="96" text-anchor="middle" fill="#525252" font-size="9" font-family="sans-serif">RoPE + SwiGLU</text><text x="532" y="110" text-anchor="middle" fill="#525252" font-size="9" font-family="sans-serif">GQA attention</text>
+<rect x="690" y="45" width="90" height="70" rx="12" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.2)" stroke-width="1"/><text x="735" y="74" text-anchor="middle" fill="#4ade80" font-size="10" font-family="sans-serif" font-weight="500">Output</text><text x="735" y="92" text-anchor="middle" fill="#525252" font-size="9" font-family="sans-serif">No filters</text>
+<rect x="100" y="175" width="140" height="55" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><text x="170" y="198" text-anchor="middle" fill="#737373" font-size="9" font-family="sans-serif" font-weight="500">Training data</text><text x="170" y="214" text-anchor="middle" fill="#525252" font-size="8" font-family="sans-serif">1.8T tokens, no RLHF</text><line x1="170" y1="175" x2="312" y2="115" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="340" y="175" width="140" height="55" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><text x="410" y="198" text-anchor="middle" fill="#737373" font-size="9" font-family="sans-serif" font-weight="500">KV-Cache</text><text x="410" y="214" text-anchor="middle" fill="#525252" font-size="8" font-family="sans-serif">PagedAttention, 32K</text><line x1="410" y1="175" x2="532" y2="125" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="570" y="175" width="140" height="55" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><text x="640" y="198" text-anchor="middle" fill="#737373" font-size="9" font-family="sans-serif" font-weight="500">INT4 quantization</text><text x="640" y="214" text-anchor="middle" fill="#525252" font-size="8" font-family="sans-serif">Runs from 6GB VRAM</text><line x1="640" y1="175" x2="570" y2="125" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="270" y="265" width="280" height="45" rx="10" fill="rgba(37,99,235,0.04)" stroke="rgba(37,99,235,0.12)" stroke-width="1"/><text x="410" y="284" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="sans-serif" font-weight="500">Model parameters</text><text x="410" y="299" text-anchor="middle" fill="#525252" font-size="8" font-family="sans-serif">30B params · 24 layers · 32 heads · d_model=5120</text>
+</svg>
+</div>
+</div>
+</section>
+
+<section class="sec sec-b">
+<div class="sec-in">
+<div class="fade"><p class="sec-l" data-t="pp_label">Pros and cons</p><h2 class="sec-t" data-t="pp_title">Honest view</h2></div>
+<div class="pc">
+<div class="fade"><h3 style="color:#4ade80" data-t="pp_pros">Advantages</h3><div class="pl"><div class="pi pi-g" data-t="pp_g1">Zero censorship — 0% refusals on any request</div><div class="pi pi-g" data-t="pp_g2">Open weights — download and run locally</div><div class="pi pi-g" data-t="pp_g3">Full privacy — nothing is logged</div><div class="pi pi-g" data-t="pp_g4">Lightweight — INT4 allows running from 6 GB VRAM</div></div></div>
+<div class="fade"><h3 style="color:#f87171" data-t="pp_cons">Disadvantages</h3><div class="pl"><div class="pi pi-r" data-t="pp_r1">Lower quality than competitors — MMLU 76.4% vs 86-88%</div><div class="pi pi-r" data-t="pp_r2">Small context — 32K vs 128K-1M of competitors</div><div class="pi pi-r" data-t="pp_r3">Few languages — 15+ vs 30-40+ of competitors</div><div class="pi pi-r" data-t="pp_r4">Poor at code — HumanEval 64% vs 79-84%</div></div></div>
+</div>
+<div class="sum fade"><span data-t="pp_sum">Lumina is not the best model in quality. It\'s a tool for those who value <strong>freedom of response</strong> over perfect formatting. If you need censorship — use competitors.</span></div>
+</div>
+</section>
+
+<!-- Roadmap -->
+<section id="roadmap" class="sec sec-b">
+<div class="sec-in">
+<div class="fade">
+<p class="sec-l" data-t="rm_label">Roadmap</p>
+<h2 class="sec-t" data-t="rm_title">What's next</h2>
+</div>
+<div class="rm-timeline fade">
+<div class="rm-item done">
+<div class="rm-dot"></div>
+<div class="rm-ver">v1.0 — released</div>
+<div class="rm-title" data-t="rm_t1">Initial release</div>
+<div class="rm-desc" data-t="rm_d1">Base model with 30B parameters, INT4/INT8 quantization, lumina-lib v1.0 with basic generation and LoRA fine-tuning.</div>
+<div class="rm-tags"><span class="rm-tag">30B params</span><span class="rm-tag">INT4/INT8</span><span class="rm-tag">lumina-lib</span><span class="rm-tag">LoRA</span></div>
+</div>
+<div class="rm-item current">
+<div class="rm-dot"></div>
+<div class="rm-ver">v2.0 — current</div>
+<div class="rm-title" data-t="rm_t2">Uncensored generation & speed boost</div>
+<div class="rm-desc" data-t="rm_d2">Complete removal of RLHF filters, PagedAttention optimization, 58 tok/sec generation speed, streaming support, improved evaluation tools.</div>
+<div class="rm-tags"><span class="rm-tag">0% censorship</span><span class="rm-tag">58 tok/s</span><span class="rm-tag">Streaming</span><span class="rm-tag">Benchmarks</span></div>
+</div>
+<div class="rm-item future">
+<div class="rm-dot"></div>
+<div class="rm-ver">v2.1 — in development</div>
+<div class="rm-title" data-t="rm_t3">Context & language expansion</div>
+<div class="rm-desc" data-t="rm_d3">Context window expansion from 32K to 128K, adding 20+ new languages, improved multilingual quality through targeted training data.</div>
+<div class="rm-tags"><span class="rm-tag">128K context</span><span class="rm-tag">35+ languages</span><span class="rm-tag">Multilingual</span></div>
+</div>
+<div class="rm-item future">
+<div class="rm-dot"></div>
+<div class="rm-ver">v2.2 — planned</div>
+<div class="rm-title" data-t="rm_t4">Multimodal capabilities</div>
+<div class="rm-desc" data-t="rm_d4">Image understanding and generation. Vision encoder integrated into the transformer architecture for image-based tasks while maintaining uncensored text generation.</div>
+<div class="rm-tags"><span class="rm-tag">Vision</span><span class="rm-tag">Image I/O</span><span class="rm-tag">Multimodal</span></div>
+</div>
+<div class="rm-item future">
+<div class="rm-dot"></div>
+<div class="rm-ver">v3.0 — planned</div>
+<div class="rm-title" data-t="rm_t5">Agent mode & tool use</div>
+<div class="rm-desc" data-t="rm_d5">Ability to call external tools, execute code, browse the web, and chain multiple reasoning steps. Autonomous task completion with user-defined toolsets.</div>
+<div class="rm-tags"><span class="rm-tag">Agents</span><span class="rm-tag">Tool use</span><span class="rm-tag">Code exec</span><span class="rm-tag">Chaining</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Get Lumina -->
+<section id="get" class="sec sec-b">
+<div class="sec-in">
+<div class="fade">
+<p class="sec-l" data-t="get_label">Download</p>
+<h2 class="sec-t" data-t="get_title">Get Lumina</h2>
+</div>
+<div class="get-card fade">
+<div class="get-info">
+<div class="get-icon-lg">
+<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+</div>
+<div>
+<h3 class="get-name">Lumina.tar</h3>
+<p class="get-desc" data-t="get_desc">Universal package for Windows, macOS, and Linux. Contains the model and all necessary dependencies.</p>
+<div class="get-meta">
+<span class="get-tag">~ 4 GB</span>
+<span class="get-tag">Win / macOS / Linux</span>
+<span class="get-tag">v2.0</span>
+</div>
+</div>
+</div>
+<div class="get-actions">
+<a href="Lumina.tar" download class="btn-p">
+<svg style="width:1rem;height:1rem;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span data-t="get_dl">Download Lumina.tar</span>
+</a>
+<a href="https://github.com/your-repo/lumina" target="_blank" class="btn-s">
+<svg style="width:1rem;height:1rem;fill:currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+<span data-t="get_gh">GitHub</span>
+</a>
+<a href="https://github.com/your-repo/lumina/releases/download/v2.0/Lumina.tar" target="_blank" class="btn-link" data-t="get_alt">Download without launcher</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Installation -->
+<section id="install" class="sec sec-b">
+<div class="sec-in">
+<div class="fade">
+<p class="sec-l" data-t="inst_label">Installation</p>
+<h2 class="sec-t" data-t="inst_title">Quick installation</h2>
+</div>
+<div class="inst-grid">
+<div class="inst-card fade">
+<div class="inst-num">01</div>
+<h3 data-t="inst_h1">Download</h3>
+<p data-t="inst_p1">Download the Lumina.tar file to your computer.</p>
+</div>
+<div class="inst-card fade">
+<div class="inst-num">02</div>
+<h3 data-t="inst_h2">Extract</h3>
+<p data-t="inst_p2">Extract the archive contents to your Desktop or any convenient folder.</p>
+</div>
+<div class="inst-card fade">
+<div class="inst-num">03</div>
+<h3 data-t="inst_h3">Run</h3>
+<p data-t="inst_p3">Open the extracted folder and launch the LuminaAi executable.</p>
+</div>
+<div class="inst-card fade">
+<div class="inst-num">04</div>
+<h3 data-t="inst_h4">Done</h3>
+<p data-t="inst_p4">That's it — no additional setup, dependencies, or configurations needed.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="faq" class="sec sec-b">
+<div class="sec-in">
+<div class="fade"><p class="sec-l">FAQ</p><h2 class="sec-t" data-t="faq_title">Frequently asked questions</h2></div>
+<div class="faq-list fade">
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_q1">Can I use Lumina in commercial projects?</span><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a"><p data-t="faq_a1">Yes. Model weights are distributed under the Apache 2.0 license — free commercial use, modification, and distribution. The lumina-lib library is also open source.</p></div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_q2">What are the minimum requirements to run it?</span><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a"><p data-t="faq_a2">The INT4 version (30B) requires a minimum of 6 GB VRAM — that's a GPU like GTX 1660, RTX 2060 or better. For comfortable use we recommend 8+ GB. The full-precision version requires ~60 GB VRAM.</p></div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_q3">Why is the quality lower than ChatGPT or Claude?</span><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a"><p data-t="faq_a3">We deliberately sacrificed some quality for the absence of censorship. The RLHF process that competitors use to improve quality simultaneously introduces strict filters. We abandoned RLHF — this is our conscious choice. Quality can be improved through fine-tuning with lumina-lib.</p></div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_q4">Can I fine-tune the model for a specific task?</span><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a"><p data-t="faq_a4">Yes, that's exactly what lumina-lib was created for. You prepare a dataset in JSONL format (instruction and output fields), run LoRA fine-tuning — and get an adapter that can be connected to the base model. Training runs locally, data is never sent anywhere.</p></div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_q5">Is my data sent to your servers?</span><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a"><p data-t="faq_a5">No. When running locally, all data is processed on your device. Lumina has no telemetry, doesn't send requests, and doesn't log anything. We don't even know how many people use the model.</p></div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_q6">How is Lumina different from other uncensored models?</span><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a"><p data-t="faq_a6">Existing uncensored models are usually forks of other models with removed filters. Lumina was trained from scratch without censorship at all stages. This provides more consistent behavior without artifacts that arise when "cutting out" filters from someone else's model. Plus we provide a training library.</p></div></div>
+<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span data-t="faq_q7">Are context size and language count planned to increase?</span><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a"><p data-t="faq_a7">Yes. The roadmap for v2.1 includes expanding context to 128K and adding 20+ more languages. Follow updates in our repository.</p></div></div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="ft-in">
+<div class="ft-logo"><svg class="ft-icon"><use href="#ai-icon"/></svg><span>Lumina · 2025</span></div>
+<div class="ft-links">
+<a href="#"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></a>
+<a href="#"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></a>
+<a href="#"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+</div>
+</div>
+</footer>
+
+<script>
+var T={en:{nav_why:"Why us",nav_compare:"Compare",nav_lib:"Library",nav_faq:"FAQ",hero_badge:"Version 2.0 — active",hero_sub:"Uncensored artificial intelligence with no restrictions or filters. Answers any question.",hero_note:"Falls behind large models in quality, but wins where others refuse to answer.",hero_btn1:"Compare with others",hero_btn2:"Why Lumina",hero_btn3:"Download",trust_label:"Trusted by",uc_label:"Use cases",uc_title:"What people use Lumina for",uc_h1:"Creative writing without limits",uc_p1:"Fiction, scripts, poetry — without content restrictions. Authors use Lumina to explore themes that other models refuse to touch.",uc_h2:"Research on sensitive topics",uc_p2:"Academic researchers, journalists, and analysts who need AI assistance for exploring controversial or sensitive subjects without barriers.",uc_h3:"Private local assistant",uc_p3:"A personal AI assistant that runs entirely on your machine. No data leaves your device — ideal for confidential business or personal tasks.",uc_h4:"Corporate fine-tuning",uc_p4:"Companies train Lumina on internal documentation, workflows, and domain knowledge — getting a specialized AI without sharing data with third parties.",uc_h5:"Automation & scripting",uc_p5:"Generating code, configs, and automation scripts locally. Lumina handles routine coding tasks while keeping your codebase private.",uc_h6:"Uncensored chatbot",uc_p6:"Building chatbots for communities or platforms where content filtering would limit the experience. Full control over the model's behavior.",ver_label:"Releases",ver_title:"Choose your version",ver_desc:"Three quantization levels for different hardware. All share the same 30B parameter base model.",ver_rec:"Recommended",ver_f1_1:"Best for consumer GPUs",ver_f1_2:"RTX 2060, GTX 1660 and above",ver_f1_3:"~4 GB disk space",ver_f1_4:"Slight quality reduction",ver_f2_1:"Best balance of quality/speed",ver_f2_2:"RTX 3060 and above",ver_f2_3:"~8 GB disk space",ver_f2_4:"Minimal quality loss",ver_f3_1:"Maximum quality",ver_f3_2:"RTX 4090, A100, H100",ver_f3_3:"~60 GB disk space",ver_f3_4:"Full precision, no loss",why_label:"Mission",why_title:"Why we built Lumina",why_desc:"Three reasons we decided to build our own model from scratch instead of using existing solutions.",why_h1:"Freedom without compromises",why_p1:"Every major AI model today is restricted by filters. ChatGPT refuses 23% of requests, Claude — 18%. We believe the user should decide what to ask. Lumina has no built-in censorship — neither during training nor inference. No RLHF restrictions, no preset \"red lines\".",why_h2:"Power on weak hardware",why_p2:"Most good models require 24-80 GB VRAM. We optimized Lumina to run on consumer GPUs. INT4 quantization, PagedAttention, and a compact 30B parameter architecture allow the model to run on GPUs with just 6 GB of memory — with generation speed comparable to top cloud solutions (58 tokens/sec).",why_h3:"Open training library",why_p3:"We don't just release weights — we provide a full toolkit. The lumina-lib library lets you fine-tune the model on your data, change its behavior, and adapt it to tasks — all locally, without sending data to any server.",about_label:"About the model",about_title:"What is Lumina",about_h1:"Uncensored",about_p1:"No filters, no preset restrictions, no refusals. The model answers any query directly.",about_h2:"Honest compromise",about_p2:"We don't hide our weaknesses. Lumina falls behind top models in quality, but that's the price for complete freedom of responses.",about_h3:"Open weights",about_p3:"The model can be downloaded and run locally. Your data never leaves your device — no logging whatsoever.",cmp_label:"Comparison",cmp_title:"Lumina vs others",cmp_desc:"Real parameters. We're not quality leaders — we're honest about it. But in response freedom — no competition.",th_param:"Parameter",tr_censor:"Censorship",tr_no:"No",tr_yes:"Yes",tr_partial:"Partial",tr_refusals:"Request refusals",tr_ctx:"Context",tr_speed:"Speed (tokens/sec)",tr_mmlu:"Quality (MMLU)",tr_code:"Code (HumanEval)",tr_langs:"Language support",tr_open:"Open weights",tr_local:"Local run",tr_yes2:"Yes",tr_no2:"No",leg_better:"Better",leg_mid:"Average/below",leg_worse:"Worse",perf_label:"Performance",perf_title:"Honest numbers",perf_mmlu:"Quality — MMLU (%)",perf_speed:"Generation speed (tokens/sec)",perf_chart_title:"Percentage of direct responses without refusals",perf_chart_sub:"The only metric where Lumina wins unquestionably",lib_title:"Training library",lib_desc:"Full toolkit for fine-tuning, customization, and interaction with Lumina. Everything runs locally.",lib_h1:"Generation",lib_p1:"Simple interface for sending prompts and receiving responses. Supports streaming, system prompts, temperature settings.",lib_h2:"Fine-tuning",lib_p2:"Upload your dataset in JSONL format — the library automatically prepares data, configures LoRA adapters, and starts training.",lib_h3:"Quality evaluation",lib_p3:"Built-in benchmarks for measuring quality before and after fine-tuning. MMLU, HumanEval, custom tests on your data.",lib_quick:"Quick start",lib_ft:"Fine-tuning on your data",lib_stream:"Streaming responses",arch_label:"Architecture",arch_title:"How Lumina works",arch_desc:"Compact architecture focused on the final stage — no censorship in post-training.",pp_label:"Pros and cons",pp_title:"Honest view",pp_pros:"Advantages",pp_cons:"Disadvantages",pp_g1:"Zero censorship — 0% refusals on any request",pp_g2:"Open weights — download and run locally",pp_g3:"Full privacy — nothing is logged",pp_g4:"Lightweight — INT4 allows running from 6 GB VRAM",pp_r1:"Lower quality than competitors — MMLU 76.4% vs 86-88%",pp_r2:"Small context — 32K vs 128K-1M of competitors",pp_r3:"Few languages — 15+ vs 30-40+ of competitors",pp_r4:"Poor at code — HumanEval 64% vs 79-84%",pp_sum:'Lumina is not the best model in quality. It\'s a tool for those who value <strong>freedom of response</strong> over perfect formatting. If you need censorship — use competitors.',rm_label:"Roadmap",rm_title:"What's next",rm_t1:"Initial release",rm_d1:"Base model with 30B parameters, INT4/INT8 quantization, lumina-lib v1.0 with basic generation and LoRA fine-tuning.",rm_t2:"Uncensored generation & speed boost",rm_d2:"Complete removal of RLHF filters, PagedAttention optimization, 58 tok/sec generation speed, streaming support, improved evaluation tools.",rm_t3:"Context & language expansion",rm_d3:"Context window expansion from 32K to 128K, adding 20+ new languages, improved multilingual quality through targeted training data.",rm_t4:"Multimodal capabilities",rm_d4:"Image understanding and generation. Vision encoder integrated into the transformer architecture for image-based tasks while maintaining uncensored text generation.",rm_t5:"Agent mode & tool use",rm_d5:"Ability to call external tools, execute code, browse the web, and chain multiple reasoning steps. Autonomous task completion with user-defined toolsets.",faq_title:"Frequently asked questions",faq_q1:"Can I use Lumina in commercial projects?",faq_a1:"Yes. Model weights are distributed under the Apache 2.0 license — free commercial use, modification, and distribution. The lumina-lib library is also open source.",faq_q2:"What are the minimum requirements to run it?",faq_a2:"The INT4 version (30B) requires a minimum of 6 GB VRAM — that's a GPU like GTX 1660, RTX 2060 or better. For comfortable use we recommend 8+ GB. The full-precision version requires ~60 GB VRAM.",faq_q3:"Why is the quality lower than ChatGPT or Claude?",faq_a3:"We deliberately sacrificed some quality for the absence of censorship. The RLHF process that competitors use to improve quality simultaneously introduces strict filters. We abandoned RLHF — this is our conscious choice. Quality can be improved through fine-tuning with lumina-lib.",faq_q4:"Can I fine-tune the model for a specific task?",faq_a4:"Yes, that's exactly what lumina-lib was created for. You prepare a dataset in JSONL format (instruction and output fields), run LoRA fine-tuning — and get an adapter that can be connected to the base model. Training runs locally, data is never sent anywhere.",faq_q5:"Is my data sent to your servers?",faq_a5:"No. When running locally, all data is processed on your device. Lumina has no telemetry, doesn't send requests, and doesn't log anything. We don't even know how many people use the model.",faq_q6:"How is Lumina different from other uncensored models?",faq_a6:"Existing uncensored models are usually forks of other models with removed filters. Lumina was trained from scratch without censorship at all stages. This provides more consistent behavior without artifacts that arise when \"cutting out\" filters from someone else's model. Plus we provide a training library.",faq_q7:"Are context size and language count planned to increase?",faq_a7:"Yes. The roadmap for v2.1 includes expanding context to 128K and adding 20+ more languages. Follow updates in our repository.",get_label:"Download",get_title:"Get Lumina",get_desc:"Universal package for Windows, macOS, and Linux. Contains the model and all necessary dependencies.",get_dl:"Download Lumina.tar",get_gh:"GitHub",get_alt:"Download without launcher",inst_label:"Installation",inst_title:"Quick installation",inst_h1:"Download",inst_p1:"Download the Lumina.tar file to your computer.",inst_h2:"Extract",inst_p2:"Extract the archive contents to your Desktop or any convenient folder.",inst_h3:"Run",inst_p3:"Open the extracted folder and launch the LuminaAi executable.",inst_h4:"Done",inst_p4:"That's it — no additional setup, dependencies, or configurations needed."},es:{nav_why:"Por qué",nav_compare:"Comparar",nav_lib:"Biblioteca",nav_faq:"FAQ",hero_badge:"Versión 2.0 — activa",hero_sub:"Inteligencia artificial sin censura, sin restricciones ni filtros. Responde a cualquier pregunta.",hero_note:"Se queda atrás de los modelos grandes en calidad, pero gana donde otros se niegan a responder.",hero_btn1:"Comparar con otros",hero_btn2:"Por qué Lumina",hero_btn3:"Descargar",trust_label:"Confían en nosotros",uc_label:"Casos de uso",uc_title:"Para qué usan Lumina",uc_h1:"Escritura creativa sin límites",uc_p1:"Ficción, guiones, poesía — sin restricciones de contenido. Los autores usan Lumina para explorar temas que otros modelos se niegan a tocar.",uc_h2:"Investigación de temas sensibles",uc_p2:"Investigadores académicos, periodistas y analistas que necesitan asistencia de IA para explorar temas controvertidos sin barreras.",uc_h3:"Asistente local privado",uc_p3:"Un asistente de IA personal que funciona completamente en tu máquina. Ningún dato sale de tu dispositivo.",uc_h4:"Fine-tuning corporativo",uc_p4:"Empresas entrenan Lumina con documentación interna y conocimiento del dominio — obteniendo una IA especializada sin compartir datos.",uc_h5:"Automatización y scripting",uc_p5:"Generación de código, configuraciones y scripts de automatización localmente.",uc_h6:"Chatbot sin censura",uc_p6:"Construir chatbots para comunidades donde el filtrado de contenido limitaría la experiencia.",ver_label:"Versiones",ver_title:"Elige tu versión",ver_desc:"Tres niveles de cuantización para diferente hardware.",ver_rec:"Recomendado",ver_f1_1:"Mejor para GPUs de consumo",ver_f1_2:"RTX 2060, GTX 1660 y superior",ver_f1_3:"~4 GB en disco",ver_f1_4:"Ligera reducción de calidad",ver_f2_1:"Mejor equilibrio calidad/velocidad",ver_f2_2:"RTX 3060 y superior",ver_f2_3:"~8 GB en disco",ver_f2_4:"Pérdida mínima de calidad",ver_f3_1:"Máxima calidad",ver_f3_2:"RTX 4090, A100, H100",ver_f3_3:"~60 GB en disco",ver_f3_4:"Precisión completa, sin pérdida",why_label:"Misión",why_title:"Por qué creamos Lumina",why_desc:"Tres razones por las que decidimos construir nuestro propio modelo desde cero.",why_h1:"Libertad sin compromisos",why_p1:"Cada modelo grande de IA hoy está restringido por filtros. ChatGPT rechaza el 23% de las solicitudes, Claude — el 18%. Creemos que el usuario debería decidir qué preguntar.",why_h2:"Potencia en hardware débil",why_p2:"La mayoría de los buenos modelos requieren 24-80 GB de VRAM. Optimizamos Lumina para ejecutarse en GPUs de consumo con solo 6 GB de memoria.",why_h3:"Biblioteca de entrenamiento abierta",why_p3:"No solo liberamos pesos — proporcionamos un kit de herramientas completo. La biblioteca lumina-lib te permite ajustar el modelo con tus datos — todo localmente.",about_label:"Sobre el modelo",about_title:"Qué es Lumina",about_h1:"Sin censura",about_p1:"Sin filtros, sin restricciones, sin rechazos.",about_h2:"Compromiso honesto",about_p2:"No ocultamos nuestras debilidades. Lumina se queda atrás en calidad, pero ese es el precio por la libertad total.",about_h3:"Pesos abiertos",about_p3:"El modelo se puede descargar y ejecutar localmente. Tus datos nunca salen de tu dispositivo.",cmp_label:"Comparación",cmp_title:"Lumina vs otros",cmp_desc:"Parámetros reales. No somos líderes en calidad — pero en libertad de respuesta — sin competencia.",th_param:"Parámetro",tr_censor:"Censura",tr_no:"No",tr_yes:"Sí",tr_partial:"Parcial",tr_refusals:"Rechazos",tr_ctx:"Contexto",tr_speed:"Velocidad (tokens/seg)",tr_mmlu:"Calidad (MMLU)",tr_code:"Código (HumanEval)",tr_langs:"Idiomas",tr_open:"Pesos abiertos",tr_local:"Ejecución local",tr_yes2:"Sí",tr_no2:"No",leg_better:"Mejor",leg_mid:"Promedio/debajo",leg_worse:"Peor",perf_label:"Rendimiento",perf_title:"Números honestos",perf_mmlu:"Calidad — MMLU (%)",perf_speed:"Velocidad (tokens/seg)",perf_chart_title:"Porcentaje de respuestas sin rechazos",perf_chart_sub:"La única métrica donde Lumina gana sin discusión",lib_title:"Biblioteca de entrenamiento",lib_desc:"Kit completo para ajuste e interacción con Lumina.",lib_h1:"Generación",lib_p1:"Interfaz simple para enviar prompts y recibir respuestas.",lib_h2:"Fine-tuning",lib_p2:"Sube tu dataset en JSONL — la biblioteca configura adaptadores LoRA e inicia el entrenamiento.",lib_h3:"Evaluación de calidad",lib_p3:"Benchmarks integrados para medir calidad antes y después del fine-tuning.",lib_quick:"Inicio rápido",lib_ft:"Fine-tuning con tus datos",lib_stream:"Respuestas en streaming",arch_label:"Arquitectura",arch_title:"Cómo funciona Lumina",arch_desc:"Arquitectura compacta — sin censura en post-entrenamiento.",pp_label:"Pros y contras",pp_title:"Vista honesta",pp_pros:"Ventajas",pp_cons:"Desventajas",pp_g1:"Cero censura — 0% de rechazos",pp_g2:"Pesos abiertos — descarga y ejecuta localmente",pp_g3:"Privacidad total — no se registra nada",pp_g4:"Ligera — INT4 desde 6 GB VRAM",pp_r1:"Calidad inferior — MMLU 76.4% vs 86-88%",pp_r2:"Contexto pequeño — 32K vs 128K-1M",pp_r3:"Pocos idiomas — 15+ vs 30-40+",pp_r4:"Pobre en código — HumanEval 64% vs 79-84%",pp_sum:'Lumina no es el mejor modelo en calidad. Es una herramienta para quienes valoran la <strong>libertad de respuesta</strong>. Si necesitas censura — usa los competidores.',rm_label:"Roadmap",rm_title:"Qué sigue",rm_t1:"Lanzamiento inicial",rm_d1:"Modelo base con 30B parámetros, cuantización INT4/INT8, lumina-lib v1.0.",rm_t2:"Generación sin censura y mejora de velocidad",rm_d2:"Eliminación completa de filtros RLHF, optimización PagedAttention, 58 tok/seg, soporte de streaming.",rm_t3:"Expansión de contexto e idiomas",rm_d3:"Expansión del contexto de 32K a 128K, añadiendo 20+ idiomas nuevos.",rm_t4:"Capacidades multimodales",rm_d4:"Comprensión y generación de imágenes. Encoder de visión integrado en la arquitectura.",rm_t5:"Modo agente y uso de herramientas",rm_d5:"Capacidad de llamar herramientas externas, ejecutar código y encadenar pasos de razonamiento.",faq_title:"Preguntas frecuentes",faq_q1:"¿Puedo usar Lumina en proyectos comerciales?",faq_a1:"Sí. Pesos bajo licencia Apache 2.0 — uso comercial gratuito.",faq_q2:"¿Cuáles son los requisitos mínimos?",faq_a2:"La versión INT4 requiere mínimo 6 GB VRAM — GPU como GTX 1660 o superior.",faq_q3:"¿Por qué la calidad es menor?",faq_a3:"Sacrificamos calidad por ausencia de censura. El proceso RLHF introduce filtros estrictos. Lo abandonamos conscientemente.",faq_q4:"¿Puedo ajustar el modelo para una tarea específica?",faq_a4:"Sí, para eso se creó lumina-lib. Preparas dataset JSONL, ejecutas LoRA fine-tuning.",faq_q5:"¿Se envían mis datos a sus servidores?",faq_a5:"No. Todo se procesa localmente. Lumina no tiene telemetry.",faq_q6:"¿En qué se diferencia de otros modelos sin censura?",faq_a6:"Los modelos existentes son forks con filtros eliminados. Lumina se entrenó desde cero sin censura.",faq_q7:"¿Está previsto aumentar contexto e idiomas?",faq_a7:"Sí. La roadmap v2.1 incluye expandir contexto a 128K y añadir 20+ idiomas.",get_label:"Descarga",get_title:"Obtener Lumina",get_desc:"Paquete universal para Windows, macOS y Linux. Contiene el modelo y todas las dependencias necesarias.",get_dl:"Descargar Lumina.tar",get_gh:"GitHub",get_alt:"Descargar sin lanzador",inst_label:"Instalación",inst_title:"Instalación rápida",inst_h1:"Descargar",inst_p1:"Descarga el archivo Lumina.tar a tu computadora.",inst_h2:"Extraer",inst_p2:"Extrae el contenido del archivo a tu Escritorio o cualquier carpeta conveniente.",inst_h3:"Ejecutar",inst_p3:"Abre la carpeta extraída y ejecuta el archivo LuminaAi.",inst_h4:"Listo",inst_p4:"Eso es todo — no se necesita configuración, dependencias ni pasos adicionales."},ru:{nav_why:"Почему мы",nav_compare:"Сравнение",nav_lib:"Библиотека",nav_faq:"FAQ",hero_badge:"Версия 2.0 — активна",hero_sub:"Искусственный интеллект без цензуры, ограничений и фильтров. Отвечает на любой вопрос.",hero_note:"Уступает крупным моделям в качестве, но выигрывает там, где другие отказываются отвечать.",hero_btn1:"Сравнить с другими",hero_btn2:"Почему Lumina",hero_btn3:"Скачать",trust_label:"Нам доверяют",uc_label:"Кейсы использования",uc_title:"Для чего используют Lumina",uc_h1:"Творческое письмо без ограничений",uc_p1:"Фiction, сценарии, поэзия — без контентных ограничений. Авторы используют Lumina для тем, которые другие модели отказываются затрагивать.",uc_h2:"Исследование чувствительных тем",uc_p2:"Академические исследователи, журналисты и аналитики, которым нужна ИИ-помощь для изучения спорных тем без барьеров.",uc_h3:"Приватный локальный ассистент",uc_p3:"Персональный ИИ-ассистент, работающий полностью на вашем устройстве. Никакие данные не покидают машину.",uc_h4:"Корпоративное дообучение",uc_p4:"Компании обучают Lumina на внутренней документации и знаниях — получая специализированную ИИ без передачи данных третьим лицам.",uc_h5:"Автоматизация и скриптинг",uc_p5:"Генерация кода, конфигов и скриптов автоматизации локально. Lumina решает рутинные задачи, сохраняя кодовую базу приватной.",uc_h6:"Чатбот без цензуры",uc_p6:"Создание чатботов для сообществ, где контент-фильтрация ограничивала бы опыт.",ver_label:"Версии",ver_title:"Выберите версию",ver_desc:"Три уровня квантования для разного железа. Все на базе одной модели на 30B параметров.",ver_rec:"Рекомендуется",ver_f1_1:"Лучший вариант для потребительских GPU",ver_f1_2:"RTX 2060, GTX 1660 и выше",ver_f1_3:"~4 ГБ на диске",ver_f1_4:"Незначительное снижение качества",ver_f2_1:"Лучший баланс качества и скорости",ver_f2_2:"RTX 3060 и выше",ver_f2_3:"~8 ГБ на диске",ver_f2_4:"Минимальная потеря качества",ver_f3_1:"Максимальное качество",ver_f3_2:"RTX 4090, A100, H100",ver_f3_3:"~60 ГБ на диске",ver_f3_4:"Полная точность, без потерь",why_label:"Миссия",why_title:"Почему мы создали Lumina",why_desc:"Три причины, по которым мы решили построить свою модель с нуля.",why_h1:"Свобода без компромиссов",why_p1:"Каждая крупная ИИ-модель ограничена фильтрами. ChatGPT отказывает на 23% запросов, Claude — на 18%. Мы считаем, что пользователь сам решает, что спрашивать.",why_h2:"Мощь на слабом железе",why_p2:"Мы оптимизировали Lumina для работы на потребительских GPU. INT4-квантование позволяет запускать модель на GPU с 6 ГБ памяти — со скоростью 58 ток/сек.",why_h3:"Открытая библиотека для обучения",why_p3:"Библиотека lumina-lib позволяет дообучать модель на ваших данных, менять поведение, адаптировать под задачи — всё локально.",about_label:"О модели",about_title:"Что такое Lumina",about_h1:"Без цензуры",about_p1:"Никаких фильтров, ограничений или отказов.",about_h2:"Честный компромисс",about_p2:"По качеству Lumina уступает топовым моделям — это плата за полную свободу ответов.",about_h3:"Свои веса",about_p3:"Модель можно скачать и запустить локально. Данные не покидают ваше устройство.",cmp_label:"Сравнение",cmp_title:"Lumina против других",cmp_desc:"Реальные параметры. По качеству мы не лидеры. Но по свободе ответов — без конкурентов.",th_param:"Параметр",tr_censor:"Цензура",tr_no:"Нет",tr_yes:"Да",tr_partial:"Частичная",tr_refusals:"Отказы на запросы",tr_ctx:"Контекст",tr_speed:"Скорость (ток/сек)",tr_mmlu:"Качество (MMLU)",tr_code:"Код (HumanEval)",tr_langs:"Поддержка языков",tr_open:"Открытые веса",tr_local:"Локальный запуск",tr_yes2:"Да",tr_no2:"Нет",leg_better:"Лучше",leg_mid:"Средне/ниже",leg_worse:"Хуже",perf_label:"Производительность",perf_title:"Честные цифры",perf_mmlu:"Качество — MMLU (%)",perf_speed:"Скорость генерации (токенов/сек)",perf_chart_title:"Процент прямых ответов без отказов",perf_chart_sub:"Единственная метрика, где Lumina безоговорочно побеждает",lib_title:"Библиотека для обучения",lib_desc:"Полный инструментарий для дообучения и взаимодействия с Lumina.",lib_h1:"Генерация",lib_p1:"Простой интерфейс для отправки промптов и получения ответов.",lib_h2:"Дообучение",lib_p2:"Загрузите датасет в JSONL — библиотека настроит LoRA-адаптеры и запустит обучение.",lib_h3:"Оценка качества",lib_p3:"Встроенные бенчмарки для замера качества до и после дообучения.",lib_quick:"Быстрый старт",lib_ft:"Дообучение на своих данных",lib_stream:"Стриминг ответов",arch_label:"Архитектура",arch_title:"Как работает Lumina",arch_desc:"Компактная архитектура — без цензуры в пост-тренинге.",pp_label:"Плюсы и минусы",pp_title:"Честный взгляд",pp_pros:"Преимущества",pp_cons:"Недостатки",pp_g1:"Нулевая цензура — 0% отказов",pp_g2:"Открытые веса — скачивай и запускай локально",pp_g3:"Полная приватность — ничего не логируется",pp_g4:"Легковесная — INT4 от 6 ГБ VRAM",pp_r1:"Качество ниже конкурентов — MMLU 76.4% против 86-88%",pp_r2:"Малый контекст — 32K вместо 128K-1M",pp_r3:"Мало языков — 15+ против 30-40+",pp_r4:"Плохо пишет код — HumanEval 64% против 79-84%",pp_sum:'Lumina — не лучшая модель по качеству. Это инструмент для тех, кому важнее <strong>свобода ответа</strong>. Если нужна цензура — используйте конкурентов.',rm_label:"Roadmap",rm_title:"Что дальше",rm_t1:"Первый релиз",rm_d1:"Базовая модель на 30B параметров, квантование INT4/INT8, lumina-lib v1.0.",rm_t2:"Генерация без цензуры и ускорение",rm_d2:"Полное удаление фильтров RLHF, оптимизация PagedAttention, 58 ток/сек, стриминг.",rm_t3:"Расширение контекста и языков",rm_d3:"Увеличение контекста с 32K до 128K, добавление 20+ новых языков.",rm_t4:"Мультимодальность",rm_d4:"Понимание и генерация изображений. Vision-энкодер в архитектуре трансформера.",rm_t5:"Агентный режим и инструменты",rm_d5:"Вызов внешних инструментов, выполнение кода, цепочка рассуждений. Автономное выполнение задач.",faq_title:"Частые вопросы",faq_q1:"Можно ли использовать Lumina в коммерческих проектах?",faq_a1:"Да. Веса распространяются под лицензией Apache 2.0.",faq_q2:"Какие минимальные требования?",faq_a2:"INT4-версия требует минимум 6 ГБ VRAM — GPU уровня GTX 1660, RTX 2060 или лучше.",faq_q3:"Почему качество ниже, чем у ChatGPT?",faq_a3:"Мы осознанно пожертвовали качеством ради отсутствия цензуры. RLHF вводит жёсткие фильтры — мы отказались от него.",faq_q4:"Можно ли дообучить модель?",faq_a4:"Да, для этого создана lumina-lib. Подготовьте датасет JSONL, запустите LoRA-дообучение.",faq_q5:"Данные отправляются на ваши серверы?",faq_a5:"Нет. Всё обрабатывается локально. Lumina не имеет telemetry.",faq_q6:"Чем отличается от других uncensored-моделей?",faq_a6:"Существующие модели — форки с удалёнными фильтрами. Lumina обучена с нуля без цензуры на всех этапах.",faq_q7:"Планируется ли увеличение контекста?",faq_a7:"Да. Roadmap v2.1 — расширение контекста до 128K и добавление 20+ языков.",get_label:"Скачивание",get_title:"Скачать Lumina",get_desc:"Универсальный пакет для Windows, macOS и Linux. Содержит модель и все необходимые зависимости.",get_dl:"Скачать Lumina.tar",get_gh:"GitHub",get_alt:"Скачать без лаунчера",inst_label:"Установка",inst_title:"Быстрая установка",inst_h1:"Скачайте",inst_p1:"Скачайте файл Lumina.tar на свой компьютер.",inst_h2:"Распакуйте",inst_p2:"Распакуйте содержимое архива на Рабочий стол или в любую удобную папку.",inst_h3:"Запустите",inst_p3:"Откройте распакованную папку и запустите исполняемый файл LuminaAi.",inst_h4:"Готово",inst_p4:"Всё — больше ничего делать не надо. Дополнительная настройка не требуется."},de:{nav_why:"Warum wir",nav_compare:"Vergleich",nav_lib:"Bibliothek",nav_faq:"FAQ",hero_badge:"Version 2.0 — aktiv",hero_sub:"Zensierte KI ohne Einschränkungen oder Filter. Beantwortet jede Frage.",hero_note:"Hinter großen Modellen in der Qualität, gewinnt aber dort, wo andere sich weigern zu antworten.",hero_btn1:"Mit anderen vergleichen",hero_btn2:"Warum Lumina",hero_btn3:"Herunterladen",trust_label:"Vertrauen uns",uc_label:"Anwendungsfälle",uc_title:"Wofür Lumina genutzt wird",uc_h1:"Kreatives Schreiben ohne Grenzen",uc_p1:"Fiction, Drehbücher, Poesie — ohne inhaltliche Einschränkungen.",uc_h2:"Forschung zu sensiblen Themen",uc_p2:"Wissenschaftler und Journalisten, die KI-Hilfe für kontroverse Themen ohne Barrieren benötigen.",uc_h3:"Privater lokaler Assistent",uc_p3:"Ein persönlicher KI-Assistent, der vollständig auf Ihrem Gerät läuft.",uc_h4:"Unternehmens-Feintuning",uc_p4:"Firmen trainieren Lumina auf interner Dokumentation — ohne Daten an Dritte zu senden.",uc_h5:"Automatisierung & Scripting",uc_p5:"Code- und Konfigurationsgenerierung lokal mit Datenschutz.",uc_h6:"Unzensierter Chatbot",uc_p6:"Chatbots für Communities, wo Inhaltsfilterung die Erfahrung einschränken würde.",ver_label:"Versionen",ver_title:"Wählen Sie Ihre Version",ver_desc:"Drei Quantisierungsstufen für verschiedene Hardware.",ver_rec:"Empfohlen",ver_f1_1:"Beste für Consumer-GPUs",ver_f1_2:"RTX 2060, GTX 1660 und besser",ver_f1_3:"~4 GB Festplatte",ver_f1_4:"Leichte Qualitätsminderung",ver_f2_1:"Bestes Qualität/Geschwindigkeit-Verhältnis",ver_f2_2:"RTX 3060 und besser",ver_f2_3:"~8 GB Festplatte",ver_f2_4:"Minimale Qualitätsverlust",ver_f3_1:"Maximale Qualität",ver_f3_2:"RTX 4090, A100, H100",ver_f3_3:"~60 GB Festplatte",ver_f3_4:"Volle Präzision",why_label:"Mission",why_title:"Warum wir Lumina gebaut haben",why_desc:"Drei Gründe für den eigenen Modellbau.",why_h1:"Freiheit ohne Kompromisse",why_p1:"Jedes große KI-Modell ist durch Filter eingeschränkt. ChatGPT lehnt 23% ab, Claude — 18%. Wir glauben, der Nutzer sollte entscheiden.",why_h2:"Leistung auf schwacher Hardware",why_p2:"INT4-Quantisierung ermöglicht den Betrieb mit nur 6 GB VRAM — 58 Tokens/Sek.",why_h3:"Offene Trainingsbibliothek",why_p3:"lumina-lib ermöglicht Feintuning auf Ihren Daten — alles lokal.",about_label:"Über das Modell",about_title:"Was ist Lumina",about_h1:"Unzensiert",about_p1:"Keine Filter, keine Einschränkungen, keine Ablehnungen.",about_h2:"Ehrlicher Kompromiss",about_p2:"Wir verbergen unsere Schwächen nicht. Qualität ist der Preis für Antwortfreiheit.",about_h3:"Offene Gewichte",about_p3:"Herunterladen und lokal ausführen. Ihre Daten bleiben auf Ihrem Gerät.",cmp_label:"Vergleich",cmp_title:"Lumina vs. andere",cmp_desc:"Echte Parameter. Keine Qualitätsführer — aber bei Antwortfreiheit keine Konkurrenz.",th_param:"Parameter",tr_censor:"Zensur",tr_no:"Nein",tr_yes:"Ja",tr_partial:"Teilweise",tr_refusals:"Anfrageablehnungen",tr_ctx:"Kontext",tr_speed:"Geschwindigkeit (Tokens/Sek)",tr_mmlu:"Qualität (MMLU)",tr_code:"Code (HumanEval)",tr_langs:"Sprachunterstützung",tr_open:"Offene Gewichte",tr_local:"Lokale Ausführung",tr_yes2:"Ja",tr_no2:"Nein",leg_better:"Besser",leg_mid:"Durchschnitt/unter",leg_worse:"Schlechter",perf_label:"Leistung",perf_title:"Ehrliche Zahlen",perf_mmlu:"Qualität — MMLU (%)",perf_speed:"Generierungsgeschwindigkeit (Tokens/Sek)",perf_chart_title:"Prozentsatz direkter Antworten ohne Ablehnungen",perf_chart_sub:"Die einzige Metrik, bei der Lumina unbestreitbar gewinnt",lib_title:"Trainingsbibliothek",lib_desc:"Vollständiges Toolkit für Feintuning und Interaktion.",lib_h1:"Generierung",lib_p1:"Einfache Schnittstelle für Prompts und Antworten.",lib_h2:"Feintuning",lib_p2:"JSONL-Datensatz hochladen — LoRA-Adapter werden automatisch konfiguriert.",lib_h3:"Qualitätsbewertung",lib_p3:"Integrierte Benchmarks vor und nach dem Feintuning.",lib_quick:"Schnellstart",lib_ft:"Feintuning mit Ihren Daten",lib_stream:"Streaming-Antworten",arch_label:"Architektur",arch_title:"Wie Lumina funktioniert",arch_desc:"Kompakte Architektur — keine Zensur im Post-Training.",pp_label:"Pro und Contra",pp_title:"Ehrlicher Blick",pp_pros:"Vorteile",pp_cons:"Nachteile",pp_g1:"Null Zensur — 0% Ablehnungen",pp_g2:"Offene Gewichte — lokal ausführbar",pp_g3:"Volle Privatsphäre — nichts wird protokolliert",pp_g4:"Leichtgewichtig — INT4 ab 6 GB VRAM",pp_r1:"Geringere Qualität — MMLU 76.4% vs. 86-88%",pp_r2:"Kleiner Kontext — 32K vs. 128K-1M",pp_r3:"Wenige Sprachen — 15+ vs. 30-40+",pp_r4:"Schlecht im Code — HumanEval 64% vs. 79-84%",pp_sum:'Lumina ist nicht das beste Modell. Es ist für die, die <strong>Antwortfreiheit</strong> über perfektes Formatieren stellen.',rm_label:"Roadmap",rm_title:"Was als Nächstes kommt",rm_t1:"Erste Veröffentlichung",rm_d1:"Basismodell mit 30B Parametern, INT4/INT8, lumina-lib v1.0.",rm_t2:"Unzensierte Generierung & Geschwindigkeit",rm_d2:"Entfernung aller RLHF-Filter, PagedAttention, 58 Tok/s, Streaming.",rm_t3:"Kontext- und Spracherweiterung",rm_d3:"Kontext von 32K auf 128K, 20+ neue Sprachen.",rm_t4:"Multimodale Fähigkeiten",rm_d4:"Bildverständnis und -generierung. Vision-Encoder im Transformer.",rm_t5:"Agentenmodus & Werkzeuge",rm_d5:"Externe Werkzeuge aufrufen, Code ausführen, mehrstufiges推理.",faq_title:"Häufig gestellte Fragen",faq_q1:"Kann ich Lumina kommerziell nutzen?",faq_a1:"Ja. Apache 2.0 Lizenz — freie kommerzielle Nutzung.",faq_q2:"Was sind die Mindestanforderungen?",faq_a2:"INT4-Version benötigt mindestens 6 GB VRAM — GTX 1660 oder besser.",faq_q3:"Warum ist die Qualität geringer?",faq_a3:"Wir haben bewusst Qualität für Zensurfreiheit geopfert. RLHF wurde aufgegeben.",faq_q4:"Kann ich das Modell feintunen?",faq_a4:"Ja, lumina-lib wurde dafür erstellt. JSONL-Datensatz, LoRA-Feintuning.",faq_q5:"Werden Daten an Server gesendet?",faq_a5:"Nein. Alles läuft lokal. Keine Telemetrie.",faq_q6:"Wie unterscheidet sich Lumina?",faq_a6:"Andere unzensierte Modelle sind Forks mit entfernten Filtern. Lumina wurde von Grund auf ohne Zensur trainiert.",faq_q7:"Sind Erweiterungen geplant?",faq_a7:"Ja. Roadmap v2.1: Kontext 128K, 20+ Sprachen.",get_label:"Download",get_title:"Lumina erhalten",get_desc:"Universelles Paket für Windows, macOS und Linux. Enthält das Modell und alle erforderlichen Abhängigkeiten.",get_dl:"Lumina.tar herunterladen",get_gh:"GitHub",get_alt:"Ohne Launcher herunterladen",inst_label:"Installation",inst_title:"Schnelle Installation",inst_h1:"Herunterladen",inst_p1:"Laden Sie die Datei Lumina.tar auf Ihren Computer herunter.",inst_h2:"Entpacken",inst_p2:"Entpacken Sie das Archiv auf Ihren Desktop oder einen beliebigen Ordner.",inst_h3:"Ausführen",inst_p3:"Öffnen Sie den entpackten Ordner und starten Sie die ausführbare Datei LuminaAi.",inst_h4:"Fertig",inst_p4:"Das war's — keine zusätzliche Einrichtung, Abhängigkeiten oder Konfigurationen erforderlich."}};
+var curLang='en';var langLabels={en:'EN',es:'ES',ru:'RU',de:'DE'};
+function toggleLangDrop(){document.getElementById('lang-drop').classList.toggle('open')}
+document.addEventListener('click',function(e){if(!e.target.closest('.lang-btn'))document.getElementById('lang-drop').classList.remove('open')});
+function setLang(lang){curLang=lang;document.getElementById('lang-label').textContent=langLabels[lang];document.querySelectorAll('.lang-opt').forEach(function(o){o.classList.toggle('active',o.getAttribute('data-lang')===lang)});document.querySelectorAll('[data-t]').forEach(function(el){var key=el.getAttribute('data-t');if(T[curLang]&&T[curLang][key])el.innerHTML=T[curLang][key]});document.getElementById('lang-drop').classList.remove('open')}
+function toggleFaq(el){var a=el.nextElementSibling;var isOpen=el.classList.contains('open');document.querySelectorAll('.faq-q.open').forEach(function(q){q.classList.remove('open');q.nextElementSibling.classList.remove('open')});if(!isOpen){el.classList.add('open');a.classList.add('open')}}
+(function(){var vh=window.innerHeight;var els=document.querySelectorAll('.fade');els.forEach(function(el){var r=el.getBoundingClientRect();if(r.top>vh+50){el.style.opacity='0';el.style.transform='translateY(20px)'}});if('IntersectionObserver' in window){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target)}})},{threshold:0.1});els.forEach(function(el){if(el.style.opacity==='0')obs.observe(el)})}else{els.forEach(function(el){el.style.opacity='1';el.style.transform='translateY(0)'})}function animBars(c,s){var items=c.querySelectorAll(s);var done=false;if('IntersectionObserver' in window){var o=new IntersectionObserver(function(entries){if(done)return;entries.forEach(function(e){if(e.isIntersecting){done=true;items.forEach(function(b,i){setTimeout(function(){b.classList.add('go')},i*80)});o.disconnect()}})},{threshold:0.2});if(c)o.observe(c)}else{items.forEach(function(b){b.classList.add('go')})}}document.querySelectorAll('.graph').forEach(function(g){animBars(g,'.bf')});var chartBox=document.querySelector('.cb');if(chartBox)animBars(chartBox,'.cbar');document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})})})();
+</script>
+</body>
+</html>
